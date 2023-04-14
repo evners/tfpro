@@ -22,11 +22,11 @@ universal_binaries:
 brews:
 
 - name: tfpro
-  homepage: "https://github.com/evners/tfpro"
-  tap:
+- homepage: "https://github.com/evners/tfpro"
+- tap:
   owner: evners
   name: homebrew-evners
-  commit_author:
+- commit_author:
   name: davhardy
   email: david.hardy@evners.com
 
