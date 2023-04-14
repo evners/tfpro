@@ -4,11 +4,13 @@ Copyright © 2023 EVNERS - info@evners.com
 package cmd
 
 import (
-	"bufio"
+	// "bufio"
     "fmt"
     "os"
-    "strings"
+    // "strings"
 	"errors"
+
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
@@ -48,31 +50,50 @@ func getProjectName(args []string) (string, error) {
 		return projectName, nil
 	} 
 
-	projectName = InputPrompt("What name would you like to use for the new project?")	
+    projectNamePrompt := promptContent{
+        "Please provide a a name for the project.",
+        "What name would you like to use for the new project?",
+    }
     
-	if len(projectName) < 1 {
-		return "", errors.New("You must provide a name for the project")
-	}
+	projectName = promptGetInput(projectNamePrompt)
 
 	return projectName, nil
 
 }
 
+type promptContent struct {
+    errorMsg string
+    label    string
+}
 
-// InputPrompt receives a string value using the label
-func InputPrompt(label string) string {
+func promptGetInput(pc promptContent) string {
     
-	var s string
-    r := bufio.NewReader(os.Stdin)
-    
-	for {
-        fmt.Fprint(os.Stderr, label+" ")
-        s, _ = r.ReadString('\n')
-        if s != "" {
-            break
+	validate := func(input string) error {
+        if len(input) <= 0 {
+            return errors.New(pc.errorMsg)
         }
+        return nil
     }
 
-    return strings.TrimSpace(s)
+    templates := &promptui.PromptTemplates{
+        Prompt:  "{{ . }} ",
+        Valid:   "{{ . | green }} ",
+        Invalid: "{{ . | red }} ",
+        Success: "{{ . | bold }} ",
+    }
+
+    prompt := promptui.Prompt{
+        Label:     pc.label,
+        Templates: templates,
+        Validate:  validate,
+    }
+
+    result, err := prompt.Run()
+    if err != nil {
+        fmt.Printf("Prompt failed %v\n", err)
+        os.Exit(1)
+    }
+
+    return result
 
 }
