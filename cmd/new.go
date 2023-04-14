@@ -4,18 +4,16 @@ Copyright © 2023 EVNERS - info@evners.com
 package cmd
 
 import (
-	// "bufio"
-    "fmt"
-    "os"
-	"log"
-    // "strings"
-	"errors"
-
-	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
+	"github.com/TwiN/go-color"
+	"github.com/evners/tfpro/pkg/aws"
+	"github.com/evners/tfpro/pkg/gcp"
+	"github.com/evners/tfpro/pkg/azure"
+	"github.com/evners/tfpro/pkg/prompt"
+	"github.com/evners/tfpro/pkg/utils"
 )
 
-// newCmd represents the new command
+// Represents the new command
 var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Create new terraform project",
@@ -31,74 +29,20 @@ func init() {
 
 func createProject(args []string) {
 	
-	projectName := getProjectName(args)
-	project, err := scaffoldProjectStructure(projectName)
-
-	if err != nil {
-        log.Fatal(err)
-		return
-    }
-
-	fmt.Println(project, "project created!")
+	projectName  := prompt.GetProjectName(args)
+	provider 	 := prompt.GetProvider()
 	
-}
-
-func getProjectName(args []string) string {
-
-	var projectName string
-
-	if len(args) > 0 {
-		projectName = args[0]
-		return projectName
-	} 
-
-    projectNamePrompt := promptContent{
-        "Please provide a a name for the project.",
-        "What name would you like to use for the new project?",
-    }
-    
-	projectName = promptGetInput(projectNamePrompt)
-	return projectName
-
-}
-
-func scaffoldProjectStructure(projectName string) (string, error) {
-return projectName, nil
-}
-
-type promptContent struct {
-    errorMsg string
-    label    string
-}
-
-func promptGetInput(pc promptContent) string {
-    
-	validate := func(input string) error {
-        if len(input) <= 0 {
-            return errors.New(pc.errorMsg)
-        }
-        return nil
+	switch provider {
+		case providers.AWS:
+			aws.Scaffold(projectName)
+		case providers.GCP:
+			gcp.Scaffold(projectName)
+		case providers.AZURE:
+			azure.Scaffold(projectName)
     }
 
-    templates := &promptui.PromptTemplates{
-        Prompt:  "{{ . }} ",
-        Valid:   "{{ . | green }} ",
-        Invalid: "{{ . | red }} ",
-        Success: "{{ . | bold }} ",
-    }
-
-    prompt := promptui.Prompt{
-        Label:     pc.label,
-        Templates: templates,
-        Validate:  validate,
-    }
-
-    result, err := prompt.Run()
-    if err != nil {
-        fmt.Printf("Prompt failed %v\n", err)
-        os.Exit(1)
-    }
-
-    return result
-
+	println()
+	println("Project " + projectName + " created! " + color.InGreen("OK"))
+	println()
+	
 }
