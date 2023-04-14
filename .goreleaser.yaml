@@ -1,27 +1,24 @@
 builds:
-
-- binary: tfpro
-  goos:
-  - darwin
-  - linux
+  - binary: tfpro
+    goos:
+      - darwin
+      - linux
     goarch:
-  - amd64
-  - arm64
+      - amd64
+      - arm64
     env:
-  - CGO_ENABLED=0
+      - CGO_ENABLED=0
     flags:
-  - -mod=vendor
+      - -mod=vendor
 
 release:
-prerelease: auto
+  prerelease: auto
 
 universal_binaries:
-
-- replace: true
+  - replace: true
 
 brews:
-  - 
-    name: tfpro
+  - name: tfpro
     homepage: "https://github.com/evners/tfpro"
     tap:
       owner: evners
@@ -31,4 +28,4 @@ brews:
       email: david.hardy@evners.com
 
 checksum:
-name_template: 'checksums.txt'
+  name_template: "checksums.txt"
