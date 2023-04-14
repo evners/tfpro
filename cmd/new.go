@@ -7,6 +7,7 @@ import (
 	// "bufio"
     "fmt"
     "os"
+	"log"
     // "strings"
 	"errors"
 
@@ -30,24 +31,25 @@ func init() {
 
 func createProject(args []string) {
 	
-	projectName, err := getProjectName(args)
-		
+	projectName := getProjectName(args)
+	project, err := scaffoldProjectStructure(projectName)
+
 	if err != nil {
-		fmt.Println(err)
+        log.Fatal(err)
 		return
-	}
-		
-	fmt.Println(projectName, "project created!")
+    }
+
+	fmt.Println(project, "project created!")
 	
 }
 
-func getProjectName(args []string) (string, error) {
+func getProjectName(args []string) string {
 
 	var projectName string
 
 	if len(args) > 0 {
 		projectName = args[0]
-		return projectName, nil
+		return projectName
 	} 
 
     projectNamePrompt := promptContent{
@@ -56,9 +58,12 @@ func getProjectName(args []string) (string, error) {
     }
     
 	projectName = promptGetInput(projectNamePrompt)
+	return projectName
 
-	return projectName, nil
+}
 
+func scaffoldProjectStructure(projectName string) (string, error) {
+return projectName, nil
 }
 
 type promptContent struct {
