@@ -42,7 +42,7 @@ func createProject(args []string) {
     }
 
 	println()
-	println("Project " + projectName + " created! " + color.InGreen("OK"))
+	println("🚀 Successfully created project " + color.InGreen(projectName))
 	println()
 	
 }
