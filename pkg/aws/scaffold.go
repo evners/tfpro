@@ -37,7 +37,7 @@ func createProjectFolder(project string) {
 func addReadme(project string) {
 
 	path := project + "/README.md"
-    
+
 	// Variables
 	vars := make(map[string]interface{})
     vars["Project"] = project
@@ -184,7 +184,7 @@ func addResourcesDirectories(resources string) {
     }
 
 	path := modules + "/.gitkeep"
-    
+
 	// Variables
 	vars := make(map[string]interface{})
     vars["Message"] = "Add your custom modules in this directory."
@@ -202,7 +202,7 @@ func addResourcesDirectories(resources string) {
 	println(color.InGreen(create) + path)
 
     path = environments + "/.gitkeep"
-    
+
 	// Variables
     vars["Message"] = "Add the tfvars files depending on the workspaces you are going to use."
 
@@ -218,7 +218,7 @@ func addResourcesDirectories(resources string) {
 }
 
 func addTerraformResourcesFiles(resources string) {
-	
+
 	path := resources + "/main.tf"
 
     // Parse the template

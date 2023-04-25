@@ -11,13 +11,14 @@ import (
 	"github.com/evners/tfpro/pkg/azure"
 	"github.com/evners/tfpro/pkg/prompt"
 	"github.com/evners/tfpro/pkg/utils"
+	"github.com/evners/tfpro/pkg/config"
 )
 
 // Represents the new command
 var newCmd = &cobra.Command{
 	Use:   "new",
 	Short: "Create new terraform project",
-	
+
 	Run: func(cmd *cobra.Command, args []string) {
 		createProject(args)
 	},
@@ -28,10 +29,10 @@ func init() {
 }
 
 func createProject(args []string) {
-	
+
 	projectName  := prompt.GetProjectName(args)
 	provider 	 := prompt.GetProvider()
-	
+
 	switch provider {
 		case providers.AWS:
 			aws.Scaffold(projectName)
@@ -41,8 +42,10 @@ func createProject(args []string) {
 			azure.Scaffold(projectName)
     }
 
+	config.ConfigurePrecommit(projectName)
+
 	println()
 	println("🚀 Successfully created project " + color.InGreen(projectName))
 	println()
-	
+
 }
