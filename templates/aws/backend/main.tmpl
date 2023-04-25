@@ -1,0 +1,12 @@
+# Terraform module to create a backend configuration and stores the state in a bucket on Amazon S3, 
+# this backend also supports state locking and consistency checking via Dynamo DB.
+module "backend-s3" {
+  source  = "evners/backend-s3/aws"
+  version = "1.0.0"
+}
+
+# Create a local file with the configuration provided by backend-s3 module.
+resource "local_sensitive_file" "versions" {
+  filename = "${path.module}/../resources/versions.tf"
+  content  = data.template_file.versions.rendered
+}

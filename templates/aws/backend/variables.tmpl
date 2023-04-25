@@ -1,0 +1,17 @@
+variable "project" {
+  default     = "{{.Project}}"
+  description = "The name of the project we are working on."
+  type        = string
+}
+
+variable "aws_region" {
+  default     = "eu-west-1"
+  description = "The AWS default region where you want to create resources."
+  type        = string
+}
+
+variable "aws_profile" {
+  default     = "{{.Project}}"
+  description = "The profile configured as credentials in AWS CLI."
+  type        = string
+}

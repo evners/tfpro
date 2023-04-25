@@ -1,0 +1,17 @@
+# Renders a template from a template string.
+data "template_file" "versions" {
+  
+  # Template string
+  template = file("${path.module}/templates/versions.tf.tpl")
+
+  # Variables required by template.
+  vars = {
+    project              = var.project
+    profile              = var.aws_profile
+    aws_region           = var.aws_region
+    bucket_name          = module.backend-s3.bucket_name
+    kms_key              = module.backend-s3.bucket_kms_alias_key
+    dynamodb_table       = module.backend-s3.dynamodb_table_id
+  }
+
+}
